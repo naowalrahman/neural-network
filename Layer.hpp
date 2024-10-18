@@ -8,7 +8,7 @@
 class Layer {
 public:
     int n;
-    std::string &activation, &weight_initializer, &bias_initializer;
+    std::string activation, weight_initializer, bias_initializer;
     std::vector<Neuron> neurons;
 
     Layer(int n,

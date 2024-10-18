@@ -34,11 +34,11 @@ const std::map<std::string, std::function<double(double)>> activation_map = {
     {"relu", Activations::relu},
 };
 
-const std::map<std::string, std::function<std::vector<double>&(void)>> weight_initializer_map = {
+const std::map<std::string, std::function<std::vector<double>&()>> weight_initializer_map = {
     {"glorot_uniform", WeightInitializers::glorot_uniform}
 };
 
-const std::map<std::string, std::function<double(void)>> bias_initializer_map = {
+const std::map<std::string, std::function<double()>> bias_initializer_map = {
     {"zeros", BiasInitializers::zeros}
 };
 
