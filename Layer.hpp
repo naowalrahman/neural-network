@@ -8,14 +8,12 @@
 class Layer {
 public:
     int n;
-    std::string activation, weight_initializer, bias_initializer;
+    std::string activation;
     std::vector<Neuron> neurons;
 
-    Layer(int n,
-          std::string& activation,
-          std::string& weight_initializer,
-          std::string& bias_initializer);
+    Layer(int n, std::string& activation);
 
+    void initialize_parameters(int fan_in, int fan_out);
     std::vector<double>& calculate(std::vector<double>& inputs);
 };
 
