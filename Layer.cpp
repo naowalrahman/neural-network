@@ -12,7 +12,7 @@ Layer::Layer(int n, std::string& activation) {
     this->neurons = std::vector<Neuron>(n);
     for (int i = 0; i < n; i++) {
         std::vector<double> weights(n);
-        neurons[i] = Neuron(weights, 0);
+        neurons[i] = Neuron(weights, 0); // bias initializer = 0
     }
 }
 

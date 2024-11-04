@@ -2,7 +2,7 @@
 #include <cmath>
 
 double Activations::sigmoid(double x) {
-    return 1 / (1 + exp(-x));
+    return 1 / (1 + std::exp(-x));
 }
 
 double Activations::relu(double x) {
