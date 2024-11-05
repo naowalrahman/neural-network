@@ -11,7 +11,7 @@ double sigmoid(double x);
 double relu(double x);
 // TODO: Add more activation functions
 
-const std::map<std::string, std::function<double(double)>> activation_map = {
+const std::unordered_map<std::string, std::function<double(double)>> activation_map = {
     {"sigmoid", sigmoid},
     {"relu", relu},
 };

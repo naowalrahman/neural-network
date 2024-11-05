@@ -5,7 +5,7 @@
 #include "Activations.hpp"
 #include "Neuron.hpp"
 
-Layer::Layer(int n, std::string& activation) {
+Layer::Layer(int n, std::string activation) {
     this->n = n;
     this->activation = activation;
 }
@@ -20,7 +20,7 @@ void Layer::initialize_parameters(int fan_in) {
     auto get_weight = std::bind(distribution, engine);
 
     for (int i = 0; i < fan_out; i++) {
-        std::vector<double> weights(fan_out);
+        std::vector<double> weights(fan_in);
         for (int j = 0; j < fan_in; j++) {
             weights[j] = get_weight();
         }

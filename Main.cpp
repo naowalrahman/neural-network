@@ -6,18 +6,19 @@
 
 int main() {
     std::vector<double> input = {0.3, 0.4};
-    std::string activation = "sigmoid";
     std::vector<Layer> layers = {
-        Layer(2, activation)
+        Layer(4, "sigmoid"),
+        Layer(3, "relu"),
+        Layer(5, "sigmoid")
     };
 
     NeuralNetwork model = NeuralNetwork(input, layers);
     
     for (size_t i = 0; i < model.layers.size(); i++) {
-        std::cout << "Layer " << i << ":\n\t";
+        std::cout << "Layer " << i + 1 << ":\n\t";
         std::vector<Neuron> neurons = model.layers[i].neurons;
         for (size_t j = 0; j < neurons.size(); j++) {
-            std::cout << "Neuron " << j << ": ";
+            std::cout << "Neuron " << j + 1 << ": ";
             for (size_t k = 0; k < neurons[j].weights.size(); k++) {
                 std::cout << neurons[j].weights[k] << " ";
             }

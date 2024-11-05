@@ -11,7 +11,7 @@ public:
     std::string activation;
     std::vector<Neuron> neurons;
 
-    Layer(int n, std::string& activation);
+    Layer(int n, std::string activation);
 
     void initialize_parameters(int fan_in);
     std::vector<double> calculate(std::vector<double>& inputs);
