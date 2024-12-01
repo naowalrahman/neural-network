@@ -1,7 +1,5 @@
 # Neural Network
 
-**WIP.**
-
 This is an attempt at implementing a neural network in purely C++ with no external libraries (only C++ STL). So far, I've completed the entire neural network structure, which uses [glorot uniform weight initialization](https://www.tensorflow.org/api_docs/python/tf/keras/initializers/GlorotUniform) and has multiple activation function support. Training is done via [backpropagation](https://en.wikipedia.org/wiki/Backpropagation) using [stochastic gradient descent](https://en.wikipedia.org/wiki/Stochastic_gradient_descent). 
 
 I will document this project more extensively and give this README a more formal write-up once I finish implementation! For an explanation of backpropagation, see [backpropagation.md](./backpropagation.md).
@@ -12,19 +10,23 @@ The following model achieves essentially 100% accuracy after training with $n = 
 
 ```txt
 Layer 1 (sigmoid):
-        Neuron 1: -3.9019 1.5016 
-        Neuron 2: 5.2515 5.5733 
-        Neuron 3: -1.6861 4.3022 
-        Neuron 4: -2.5383 0.79651 
+        Neuron 1: 1.7349 1.7117 [bias: -2.5654]
+        Neuron 2: -1.9663 -2.4515 [bias: 3.3307]
+        Neuron 3: -5.4436 -5.2983 [bias: 1.9498]
+        Neuron 4: 1.4488 0.54997 [bias: -0.98019]
 Layer 2 (sigmoid):
-        Neuron 1: -2.6143 -2.7931 3.1181 -1.0519 
-        Neuron 2: 3.0904 4.9213 -4.5853 2.0534 
-        Neuron 3: 0.5383 0.72858 0.55805 0.01614 
-        Neuron 4: 0.61733 1.0527 0.40602 -0.091099 
+        Neuron 1: 0.15555 0.86921 -1.9651 0.67768 [bias: 0.26103]
+        Neuron 2: 1.6101 -1.2021 2.1533 0.6044 [bias: -0.62403]
+        Neuron 3: 2.334 -3.3788 4.4697 1.6803 [bias: -0.53567]
+        Neuron 4: -2.0916 2.4694 -4.9442 -1.2314 [bias: 0.85497]
 Layer 3 (sigmoid):
-        Neuron 1: -5.2896 8.2978 -0.0018658 0.18326 
-Accuracy: 1.00000, loss: 0.00015695
+        Neuron 1: 1.8202 -3.0607 -6.5665 6.2184 [bias: 0.16765]
+Accuracy: 1.00000, loss: 0.00012206
 ```
+
+## MNIST Performance
+
+The model available at [mnist.txt](./mnist.txt) achieves 97.49% accuracy on the [MNIST handwritten digits dataset](https://yann.lecun.com/exdb/mnist/). It was trained with the [mean squared error](https://en.wikipedia.org/wiki/Mean_squared_error) loss function using a learning rate $\eta = 0.1$ and 10 epochs.
 
 ## Building
 
@@ -44,4 +46,5 @@ Edit `Main.cpp` to change the setup of the neural network :relaxed:.
 - [x] Feedforward ANN architecture
 - [x] Backpropagation algorithm to train models
 - [x] Train xor model
-- [ ] MNIST classification model
+- [x] MNIST classification model
+- [ ] Perspicuously document code

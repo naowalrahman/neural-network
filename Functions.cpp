@@ -1,47 +1,35 @@
 #include "Functions.hpp"
 #include <cmath>
 #include <stdexcept>
+#include <algorithm>
 #include "Matrix.hpp"
 
 Matrix Activations::sigmoid(Matrix& x) {
-    Matrix result(x.rows, x.cols);
-    for (size_t i = 0; i < x.rows; i++) {
-        for (size_t j = 0; j < x.cols; j++) {
-            result[i][j] = 1 / (1 + std::exp(-x[i][j]));
-        }
-    }
-    return result;
+    return x.apply_function([](double val) { return 1 / (1 + std::exp(-val)); });
 }
 
 Matrix Activations::relu(Matrix& x) {
-    Matrix result(x.rows, x.cols);
-    for (size_t i = 0; i < x.rows; i++) {
-        for (size_t j = i; j < x.cols; j++) {
-            result[i][j] = std::max(0.0, x[i][j]);
-        }
-    }
-    return result;
-}
-
-Matrix Activations::sigmoid_derivative(Matrix& x) {
-    Matrix sig = sigmoid(x);
-    Matrix one_minus_sig = sig.scale(-1.0).add_scalar(1.0);
-    return sig.hadamard(one_minus_sig);
-}
-
-Matrix Activations::relu_derivative(Matrix& x) {
-    Matrix result(x.rows, x.cols);
-    for (size_t i = 0; i < x.rows; ++i) {
-        for (size_t j = 0; j < x.cols; ++j) {
-            result[i][j] = x[i][j] > 0.0 ? 1.0 : 0.0;
-        }
-    }
-    return result;
+    return x.apply_function([](double val) { return val > 0.0 ? val : 0.01 * val; });
 }
 
 Matrix Activations::identity(Matrix& x) {
     return x;
 }
+
+Matrix Activations::sigmoid_deriv(Matrix& x) {
+    Matrix sig = sigmoid(x);
+    Matrix one_minus_sig = sig.scale(-1.0).add_scalar(1.0);
+    return sig.hadamard(one_minus_sig);
+}
+
+Matrix Activations::relu_deriv(Matrix& x) {
+    return x.apply_function([](double val) { return val > 0.0 ? 1.0 : 0.01; });
+}
+
+Matrix Activations::identity_deriv(Matrix& x) {
+    static Matrix m = Matrix(x.rows, x.cols, 1.0);
+    return m;
+} 
 
 Matrix Loss::mean_squared_error(Matrix& predicted, Matrix& target) {
     if (predicted.rows != target.rows || predicted.cols != target.cols) {

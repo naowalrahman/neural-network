@@ -16,7 +16,6 @@ public:
     Matrix feedforward(Matrix& input);
     void backpropagate(Matrix& input, Matrix& target, double learning_rate);
     void train(std::vector<Matrix>& inputs, std::vector<Matrix>& targets, double learning_rate, int epochs, bool verbose=true);
-
 };
 
 #endif  // INCLUDE_NEURAL_NETWORK_NEURALNETWORK_HPP_

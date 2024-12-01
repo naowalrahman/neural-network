@@ -39,8 +39,8 @@ void NeuralNetwork::backpropagate(Matrix& input, Matrix& target, double learning
 
     // Propagate the error backward
     for (int i = this->layers.size() - 1; i >= 0; --i) {
-        Matrix deriv = activation_deriv_map.at(this->layers[i].activation)(outputs[i]);
-        Matrix delta = loss_deriv.hadamard(deriv);
+        Matrix output_deriv = activation_deriv_map.at(this->layers[i].activation)(outputs[i]);
+        Matrix delta = loss_deriv.hadamard(output_deriv);
 
         Matrix input_to_use = (i == 0) ? input : activated_outputs[i - 1];
         input_to_use = input_to_use.transpose();
@@ -60,14 +60,15 @@ void NeuralNetwork::backpropagate(Matrix& input, Matrix& target, double learning
 
 void NeuralNetwork::train(std::vector<Matrix>& inputs, std::vector<Matrix>& targets, double learning_rate, int epochs, bool verbose) {
     for (int epoch = 0; epoch < epochs; epoch++) {
+        if (verbose) std::cout << "Epoch " << epoch << '\n';
         for (size_t i = 0; i < inputs.size(); i++) {
             this->backpropagate(inputs[i], targets[i], learning_rate);
-            if (verbose) {
-                Matrix output = this->feedforward(inputs[i]);
-                Matrix loss = Loss::loss_map.at(loss_function)(output, targets[i]);
-                std::cout << "Epoch " << epoch << ", loss: " << loss[0][0] << '\r';
-                std::cout.flush();
-            }
+            // if (verbose) {
+            //     Matrix output = this->feedforward(inputs[i]);
+            //     Matrix loss = Loss::loss_map.at(loss_function)(output, targets[i]);
+            //     std::cout << "Epoch " << epoch << ", loss: " << loss[0][0] << '\r';
+            //     std::cout.flush();
+            // }
         }
     }
     if (verbose) std::cout << "\n";

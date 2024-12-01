@@ -8,7 +8,7 @@
 #include "NeuralNetwork.hpp"
 #include "Functions.hpp"
 
-void print_model(NeuralNetwork& model) {
+void print_model(NeuralNetwork& model) { 
     for (size_t i = 0; i < model.layers.size(); i++) {
         Layer& layer = model.layers[i];
         std::cout << "Layer " << i + 1 << " (" << layer.activation << "):\n\t";
@@ -17,9 +17,27 @@ void print_model(NeuralNetwork& model) {
             for (size_t k = 0; k < layer.weights.cols; k++) {
                 std::cout << layer.weights[j][k] << " ";
             }
+            std::cout << "[bias: " << layer.biases[j][0] << "]";
             std::cout << "\n" << (j == layer.weights.rows - 1 ? "" : "\t");
         }
     }
+}
+
+void save_model(NeuralNetwork& model, std::string filename) { 
+    std::ofstream file(filename);
+    for (size_t i = 0; i < model.layers.size(); i++) {
+        Layer& layer = model.layers[i];
+        file << "Layer " << i + 1 << " (" << layer.activation << "):\n\t";
+        for (size_t j = 0; j < layer.weights.rows; j++) {
+            file << "Neuron " << j + 1 << ": ";
+            for (size_t k = 0; k < layer.weights.cols; k++) {
+                file << layer.weights[j][k] << " ";
+            }
+            file << "[bias: " << layer.biases[j][0] << "]";
+            file << "\n" << (j == layer.weights.rows - 1 ? "" : "\t");
+        }
+    }
+    file.close();
 }
 
 void test_feedforward() {
@@ -146,13 +164,12 @@ void read_mnist(std::string image_file, std::string label_file, std::vector<Matr
 }
 
 void load_mnist_data(std::vector<Matrix>& train_inputs, std::vector<Matrix>& train_targets, std::vector<Matrix>& test_inputs, std::vector<Matrix>& test_targets) {
-    read_mnist("../train-images-idx3-ubyte", "../train-labels-idx1-ubyte", train_inputs, train_targets, 60000);
-    read_mnist("../t10k-images-idx3-ubyte", "../t10k-labels-idx1-ubyte", test_inputs, test_targets, 10000);
+    read_mnist("../train-images-idx3-ubyte", "../train-labels-idx1-ubyte", train_inputs, train_targets, 600);
+    read_mnist("../t10k-images-idx3-ubyte", "../t10k-labels-idx1-ubyte", test_inputs, test_targets, 100);
 }
 
 void test_mnist() {
     std::vector<Layer> layers = {
-        Layer(784, "sigmoid"),
         Layer(128, "sigmoid"),
         Layer(10, "sigmoid")
     };
@@ -163,21 +180,40 @@ void test_mnist() {
     std::vector<Matrix> train_inputs, train_targets, test_inputs, test_targets;
     load_mnist_data(train_inputs, train_targets, test_inputs, test_targets);
 
-    model.train(train_inputs, train_targets, 0.1, 30, false);
+    model.train(train_inputs, train_targets, 0.1, 10);
 
     int correct = 0;
     double loss = 0;
     for (size_t i = 0; i < test_inputs.size(); i++) {
         Matrix output = model.feedforward(test_inputs[i]);
-        loss += Loss::loss_map.at(model.loss_function)(output, test_targets[i])[0][0];
-        if (output.argmax() == test_targets[i].argmax()) {
+        Matrix l = Loss::loss_map.at(model.loss_function)(output, test_targets[i]);
+        for (size_t j = 0; j < l.rows; ++j) {
+            loss += l[j][0] / l.rows;
+        }
+
+        if (output.max_index() == test_targets[i].max_index()) {
             correct++;
         }
     }
     loss /= test_inputs.size();
+    std::cout << test_inputs.size() << "\n";
 
-    print_model(model);
+    save_model(model, "../mnist.txt");
     printf("Accuracy: %.5f, loss: %.8f\n", (double)correct / test_inputs.size(), loss);
+
+    int ex_idx = 21;
+    std::cout << "\nExample:\n";
+    Matrix output = model.feedforward(test_inputs[ex_idx]);
+    for (size_t i = 0; i < 28; i++) {
+        for (size_t j = 0; j < 28; j++) {
+            std::cout << (int)(test_inputs[ex_idx][28 * i + j][0] > 0.0);
+        }
+        std::cout << '\n';
+    }
+    for (size_t i = 0; i < 10; i++) {
+        std::cout << output[i][0] << ' ';
+    }
+    std::cout << '\n';
 }
 
 int main() {

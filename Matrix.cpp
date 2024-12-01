@@ -4,11 +4,13 @@
 Matrix::Matrix() {
 }
 
-Matrix::Matrix(size_t rows, size_t cols) {
-    this->cols = cols;
+Matrix::Matrix(size_t rows, size_t cols, double val) {
     this->rows = rows;
-    matrix = std::vector<std::vector<double>>(rows, std::vector<double>(cols, 0.0));
+    this->cols = cols;
+    matrix = std::vector<std::vector<double>>(rows, std::vector<double>(cols, val));
 }
+
+Matrix::Matrix(size_t rows, size_t cols) : Matrix(rows, cols, 0.0) {}
 
 std::vector<double>& Matrix::operator[](int i) {
     return matrix[i];
@@ -92,34 +94,33 @@ Matrix Matrix::hadamard(Matrix& m) {
 }
 
 Matrix Matrix::scale(double scalar) {
-    Matrix result(rows, cols);
-    for (size_t i = 0; i < rows; ++i) {
-        for (size_t j = 0; j < cols; ++j) {
-            result[i][j] = matrix[i][j] * scalar;
-        }
-    }
-
-    return result;
+    return this->apply_function([scalar](double val) { return val * scalar; });
 }
 
 Matrix Matrix::add_scalar(double scalar) {
+    return this->apply_function([scalar](double val) { return val + scalar; });
+}
+
+Matrix Matrix::apply_function(std::function<double(double)> f) {
     Matrix result(rows, cols);
     for (size_t i = 0; i < rows; ++i) {
         for (size_t j = 0; j < cols; ++j) {
-            result[i][j] = matrix[i][j] + scalar;
+            result[i][j] = f(matrix[i][j]);
         }
     }
     return result;
 }
 
-double Matrix::argmax() {
+double Matrix::max_index() {
     double max = matrix[0][0];
+    double index = 0;
     for (size_t i = 0; i < rows; ++i) {
         for (size_t j = 0; j < cols; ++j) {
             if (matrix[i][j] > max) {
                 max = matrix[i][j];
+                index = i;
             }
         }
     }
-    return max;
+    return index;
 }
