@@ -16,11 +16,10 @@ endif()
 # Add the executable
 add_executable(NeuralNetwork
     Main.cpp
-    Activations.cpp
+    Functions.cpp
     Layer.cpp
-    Linalg.cpp
+    Matrix.cpp
     NeuralNetwork.cpp
-    Neuron.cpp
 )
 
 # Add include directories

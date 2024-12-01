@@ -3,18 +3,19 @@
 
 #include <string>
 #include <vector>
-#include "Neuron.hpp"
+#include "Matrix.hpp"
 
 class Layer {
 public:
     int n;
     std::string activation;
-    std::vector<Neuron> neurons;
+    Matrix weights;
+    Matrix biases;
 
     Layer(int n, std::string activation);
 
     void initialize_parameters(int fan_in);
-    std::vector<double> calculate(std::vector<double>& inputs);
+    Matrix calculate(Matrix& input);
 };
 
 #endif  // INCLUDE_NEURAL_NETWORK_LAYER_HPP_

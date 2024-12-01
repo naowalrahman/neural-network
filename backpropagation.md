@@ -1,6 +1,6 @@
 # Understanding Backpropagation
 
-Somewhat unintuitively, backpropagation has 2 steps: forward propagation and backward propagation. We first propagate the input forward through the network to get the activations at each layer. Then, we calculate the error at the output layer and propagate that error "backward" through the layers to calculate gradients for the loss function. I'll explain what all of this means below. 
+Somewhat unintuitively, backpropagation has 2 steps: forward propagation and backward propagation. We first propagate the input forward through the network to get the activations at each layer. Then, we calculate the error at the output layer and propagate that error "backward" through the layers to calculate gradients for the loss function. I'll explain what all of this means below.
 
 ## Forward Propagation
 
@@ -34,7 +34,4 @@ $$\mathbf{z}^l = \mathbf{W}^l \mathbf{a}^{l-1} + \mathbf{b}^l$$
 
 $$\frac{\partial \mathcal{L}}{\partial \mathcal{\mathbf{W}^l}} = \delta^l \cdot \frac{\partial \mathcal{\mathbf{z}^l}}{\partial \mathcal{\mathbf{W}^l}} = \boxed{ \delta^l (\mathbf{a}^{l-1})^T }$$
 
-
-Thus, we can recursively calculate $\delta^l$ and hence $\partial \mathcal{L} / \partial \mathcal{\mathbf{W}^l}$ for each layer. For the neural network described above, this takes $n^2$ derivates for the output layer and is
-
-
+Thus, we can recursively calculate $\delta^l$ and hence $\partial \mathcal{L} / \partial \mathcal{\mathbf{W}^l}$ for each layer. For the neural network described above, this takes $\mathcal{O}(n^2)$ derivatives for the output layer and depends on the training data only having the predicted result (therefore allowing us to generalize training data to any neural network).

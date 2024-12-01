@@ -6,9 +6,9 @@ CXXFLAGS = -Wall -std=c++17 -O2 -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -g -g
 EXEC = Main
 
 # Source and header files
-SRC_FILES = Activations.cpp Layer.cpp Linalg.cpp Main.cpp NeuralNetwork.cpp Neuron.cpp
+SRC_FILES = Functions.cpp Layer.cpp Matrix.cpp Main.cpp NeuralNetwork.cpp
 OBJ_FILES = $(SRC_FILES:.cpp=.o)
-HEADER_FILES = Activations.hpp Layer.hpp Linalg.hpp NeuralNetwork.hpp Neuron.hpp
+HEADER_FILES = Functions.hpp Layer.hpp Matrix.hpp NeuralNetwork.hpp
 
 # Default target
 all: $(EXEC)
