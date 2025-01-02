@@ -164,8 +164,8 @@ void read_mnist(std::string image_file, std::string label_file, std::vector<Matr
 }
 
 void load_mnist_data(std::vector<Matrix>& train_inputs, std::vector<Matrix>& train_targets, std::vector<Matrix>& test_inputs, std::vector<Matrix>& test_targets) {
-    read_mnist("../train-images-idx3-ubyte", "../train-labels-idx1-ubyte", train_inputs, train_targets, 600);
-    read_mnist("../t10k-images-idx3-ubyte", "../t10k-labels-idx1-ubyte", test_inputs, test_targets, 100);
+    read_mnist("../train-images-idx3-ubyte", "../train-labels-idx1-ubyte", train_inputs, train_targets, 60000);
+    read_mnist("../t10k-images-idx3-ubyte", "../t10k-labels-idx1-ubyte", test_inputs, test_targets, 10000);
 }
 
 void test_mnist() {
